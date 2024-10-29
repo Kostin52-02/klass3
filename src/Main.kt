@@ -1,14 +1,63 @@
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
-fun main() {
-    val name = "Kotlin"
-    //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-    // to see how IntelliJ IDEA suggests fixing it.
-    println("Hello, " + name + "!")
+@file:Suppress("UNREACHABLE_CODE")
 
-    for (i in 1..5) {
-        //TIP Press <shortcut actionId="Debug"/> to start debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint
-        // for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
-        println("i = $i")
+import kotlin.math.abs
+
+// Класс Точка
+class Point(val x: Double, val y: Double)
+
+// Класс Треугольник
+class Triangle(private val a: Point, private val b: Point, private val c: Point) {
+    // Метод для проверки, находится ли точка внутри треугольника
+    fun isPointInside(point: Point): Boolean {
+        // Формула площади треугольника: S = 1/2 * |(x1(y2-y3) + x2(y3-y1) + x3(y1-y2))|
+        val areaABC = 0.5 * abs(a.x * (b.y - c.y) + b.x * (c.y - a.y) + c.x * (a.y - b.y))
+        val areaPBC = 0.5 * abs(point.x * (b.y - c.y) + b.x * (c.y - point.y) + c.x * (point.y - b.y))
+        val areaPCA = 0.5 * abs(point.x * (c.y - a.y) + c.x * (a.y - point.y) + a.x * (point.y - c.y))
+        val areaPAB = 0.5 * abs(point.x * (a.y - b.y) + a.x * (b.y - point.y) + b.x * (point.y - a.y))
+        // Сумма площадей треугольников PBC, PCA, PAB должна быть равна площади треугольника ABC, если точка внутри
+        return areaPBC + areaPCA + areaPAB == areaABC
     }
+}
+fun main() { // Задача 3: Выбор наибольшего и наименьшего расстояний
+    println("Задача 3: Выбор наибольшего и наименьшего расстояний")
+    print("Введите количество точек: ")
+    val numPoints = readlnOrNull()?.toIntOrNull() ?: 0
+
+    if (numPoints < 3) {
+        println("Количество точек должно быть больше двух.")
+        return
+    }
+
+    val points = mutableListOf<Point>()
+    println("Введите координаты точек (x, y):")
+    for (i in 1..numPoints) {
+        print("Точка $i: ")
+        val x = readlnOrNull()?.toDoubleOrNull() ?: 0.0
+        val y = readlnOrNull()?.toDoubleOrNull() ?: 0.0
+        points.add(Point(x, y))
+    }
+
+    var minDistance = Double.MAX_VALUE
+    var maxDistance = Double.MIN_VALUE
+
+    for (i in 0..<points.size) {
+        for (j in i + 1..<points.size) {
+            val distance = points[i].distanceTo(points[j])
+            if (distance < minDistance) {
+                minDistance = distance
+            }
+            if (distance > maxDistance) {
+                maxDistance = distance
+            }
+        }
+    }
+
+    println("Минимальное расстояние: $minDistance")
+    println("Максимальное расстояние: $maxDistance")
+    println()
+}
+
+private fun Point.distanceTo(point: Point): Double {
+
+    return TODO("Provide the return value")
 }
